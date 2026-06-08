@@ -1,44 +1,81 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import {
+  LayoutDashboard,
+  Ticket,
+  ClipboardList,
+  Bot,
+  Settings,
+} from "lucide-react";
+
 export default function Sidebar() {
+  const pathname = usePathname();
+
+  const menuItems = [
+    {
+      name: "Dashboard",
+      href: "/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      name: "Create Ticket",
+      href: "/create-ticket",
+      icon: Ticket,
+    },
+    {
+      name: "My Tickets",
+      href: "/my-tickets",
+      icon: ClipboardList,
+    },
+    {
+      name: "AI Assistant",
+      href: "/ai-assistant",
+      icon: Bot,
+    },
+    {
+      name: "Settings",
+      href: "/settings",
+      icon: Settings,
+    },
+  ];
+
   return (
-    <div className="h-screen w-64 bg-slate-900 text-white p-4">
-      <h2 className="mb-8 text-2xl font-bold">
-        AI Service Desk
-      </h2>
+    <aside className="w-64 min-h-screen bg-slate-950 text-white border-r border-slate-800">
+      <div className="p-6">
+        <h1 className="text-2xl font-bold">
+          AI Service Desk
+        </h1>
 
-      <nav>
-        <ul className="space-y-4">
-  <li>
-    <Link href="/dashboard">
-      Dashboard
-    </Link>
-  </li>
+        <p className="text-sm text-slate-400 mt-1">
+          Workforce Automation
+        </p>
+      </div>
 
-  <li>
-    <Link href="/create-ticket">
-      Create Ticket
-    </Link>
-  </li>
+      <nav className="px-3">
+        {menuItems.map((item) => {
+          const Icon = item.icon;
 
-  <li>
-    <Link href="/my-tickets">
-      My Tickets
-    </Link>
-  </li>
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex items-center gap-3 rounded-lg px-4 py-3 mb-2 transition-all
+              ${
+                pathname === item.href
+                  ? "bg-blue-600 text-white"
+                  : "text-slate-300 hover:bg-slate-800"
+              }`}
+            >
+              <Icon size={18} />
 
-  <li>
-    <Link href="/ai-assistant">
-      AI Assistant
-    </Link>
-  </li>
-
-  <li>
-    <Link href="/settings">
-      Settings
-    </Link>
-  </li>
-</ul>
+              <span>{item.name}</span>
+            </Link>
+          );
+        })}
       </nav>
-    </div>
+    </aside>
   );
 }
