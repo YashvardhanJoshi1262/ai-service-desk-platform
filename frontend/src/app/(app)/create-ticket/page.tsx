@@ -1,11 +1,51 @@
+"use client";
+
+import { useState } from "react";
+import {
+  saveTicket,
+  generateTicketId,
+} from "@/lib/localStorage";
+import { Ticket } from "@/types/ticket";
+
 export default function CreateTicketPage() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState("Medium");
+  const [category, setCategory] = useState("Software");
+
+  const handleSubmit = () => {
+    if (!title || !description) {
+      alert("Please fill all required fields");
+      return;
+    }
+
+    const newTicket: Ticket = {
+      id: generateTicketId(),
+      title,
+      description,
+      priority,
+      category,
+      status: "Open",
+      createdAt: new Date().toISOString(),
+    };
+
+    saveTicket(newTicket);
+
+    alert("Ticket Created Successfully");
+
+    setTitle("");
+    setDescription("");
+    setPriority("Medium");
+    setCategory("Software");
+  };
+
   return (
-    <div className="p-8">
+    <div>
       <h1 className="mb-6 text-4xl font-bold">
         Create New Ticket
       </h1>
 
-      <div className="max-w-2xl rounded-lg bg-white p-6 shadow">
+      <div className="max-w-2xl rounded-xl bg-white p-6 shadow">
         <div className="mb-4">
           <label className="mb-2 block font-semibold">
             Title
@@ -13,6 +53,8 @@ export default function CreateTicketPage() {
 
           <input
             type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter ticket title"
             className="w-full rounded border p-3"
           />
@@ -24,6 +66,8 @@ export default function CreateTicketPage() {
           </label>
 
           <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             placeholder="Describe the issue"
             className="w-full rounded border p-3"
             rows={5}
@@ -35,7 +79,11 @@ export default function CreateTicketPage() {
             Priority
           </label>
 
-          <select className="w-full rounded border p-3">
+          <select
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+            className="w-full rounded border p-3"
+          >
             <option>Low</option>
             <option>Medium</option>
             <option>High</option>
@@ -47,7 +95,11 @@ export default function CreateTicketPage() {
             Category
           </label>
 
-          <select className="w-full rounded border p-3">
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-full rounded border p-3"
+          >
             <option>Network</option>
             <option>Hardware</option>
             <option>Software</option>
@@ -55,7 +107,10 @@ export default function CreateTicketPage() {
           </select>
         </div>
 
-        <button className="rounded bg-slate-900 px-6 py-3 text-white">
+        <button
+          onClick={handleSubmit}
+          className="rounded bg-slate-900 px-6 py-3 text-white"
+        >
           Create Ticket
         </button>
       </div>
