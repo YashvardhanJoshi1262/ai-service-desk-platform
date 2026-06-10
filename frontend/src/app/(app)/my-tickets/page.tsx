@@ -11,6 +11,8 @@ export default function MyTicketsPage() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
+  const [selectedTicket, setSelectedTicket] =
+  useState<Ticket | null>(null);
 
   useEffect(() => {
     const storedTickets = getTickets();
@@ -84,6 +86,7 @@ const filteredTickets = tickets.filter((ticket) => {
                 <th className="p-3 text-left">Title</th>
                 <th className="p-3 text-left">Priority</th>
                 <th className="p-3 text-left">Status</th>
+                <th className="p-3 text-left">Actions</th>
               </tr>
             </thead>
 
@@ -139,12 +142,65 @@ const filteredTickets = tickets.filter((ticket) => {
     <option>Resolved</option>
   </select>
 </td>
+<td className="p-3">
+  <button
+    onClick={() => setSelectedTicket(ticket)}
+    className="rounded-md bg-slate-900 px-3 py-2 text-white"
+  >
+    View
+  </button>
+</td>
                 </tr>
               ))}
             </tbody>
           </table>
         )}
       </div>
+      {selectedTicket && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black/50">
+    <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
+      <h2 className="mb-4 text-2xl font-bold">
+        Ticket Details
+      </h2>
+
+      <div className="space-y-3">
+        <p>
+          <strong>ID:</strong>{" "}
+          {selectedTicket.id}
+        </p>
+
+        <p>
+          <strong>Title:</strong>{" "}
+          {selectedTicket.title}
+        </p>
+
+        <p>
+          <strong>Description:</strong>{" "}
+          {selectedTicket.description}
+        </p>
+
+        <p>
+          <strong>Priority:</strong>{" "}
+          {selectedTicket.priority}
+        </p>
+
+        <p>
+          <strong>Status:</strong>{" "}
+          {selectedTicket.status}
+        </p>
+      </div>
+
+      <button
+        onClick={() =>
+          setSelectedTicket(null)
+        }
+        className="mt-6 rounded-md bg-red-600 px-4 py-2 text-white"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 }
