@@ -128,7 +128,7 @@ const filteredTickets = tickets.filter((ticket) => {
         e.target.value
       )
     }
-    className={`rounded-md border px-3 py-2 text-sm font-medium
+     className={`rounded-md border px-3 py-2 text-sm font-medium
   ${
     ticket.status === "Resolved"
       ? "bg-green-100 text-green-700"
